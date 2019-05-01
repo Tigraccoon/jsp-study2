@@ -61,7 +61,7 @@ th{
 	</tr>
 	<tr>
 		<th>아이디 : </th>
-		<td><input name="userid" disabled="disabled" value="<%=dto.getUserid()%>"></td>
+		<td><input name="userid" readonly="readonly" value="<%=dto.getUserid()%>"></td>
 	</tr>
 	<tr>
 		<th>비밀번호 : </th>

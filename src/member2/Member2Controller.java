@@ -70,10 +70,10 @@ public class Member2Controller extends HttpServlet {
 			rd.forward(request, response);
 			
 		} else if(uri.indexOf("update.do") != -1){
-			System.out.println("update.do");
 			String userid = request.getParameter("userid");
 			String passwd = request.getParameter("passwd");
 			String name = request.getParameter("name");
+			System.out.println(name);
 			String email = request.getParameter("email");
 			String hp = request.getParameter("hp");
 			String zipcode = request.getParameter("zipcode");
@@ -81,6 +81,13 @@ public class Member2Controller extends HttpServlet {
 			String address2 = request.getParameter("address2");
 			
 			dao.update(userid,passwd,name,email,hp,zipcode,address1,address2);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/member2/member2.jsp");
+			rd.forward(request, response);
+			 
+		} else if(uri.indexOf("delete.do") != -1){
+			String userid = request.getParameter("userid");
+			dao.delete(userid);
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/member2/member2.jsp");
 			rd.forward(request, response);

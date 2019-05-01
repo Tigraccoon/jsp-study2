@@ -174,7 +174,38 @@ public class Member2DAO {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("insert Error...");
+			System.out.println("update Error...");
+			
+		}  finally {
+			try {
+				if(pstmt!=null) pstmt.close(); 
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			try {
+				if(conn!=null) conn.close(); 
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+
+	public void delete(String userid) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "DELETE FROM member WHERE userid=?";
+			
+			conn = DB.getConn();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("delete Error...");
 			
 		}  finally {
 			try {
