@@ -34,7 +34,58 @@ public class Member2Controller extends HttpServlet {
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/member2/member2_list.jsp");
 			rd.forward(request, response);
-		} 
+		} else if(uri.indexOf("insert.do") != -1) {	//추가
+			System.out.println("insert.do");
+			
+			String userid = request.getParameter("userid");
+			String passwd = request.getParameter("passwd");
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			String hp = request.getParameter("hp");
+			String zipcode = request.getParameter("zipcode");
+			String address1 = request.getParameter("address1");
+			String address2 = request.getParameter("address2");
+			
+			//dto.setUserid(request.getParameter("userid"));
+			//dto.setPasswd(request.getParameter("passwd"));
+			//dto.setName(request.getParameter("name"));
+			//dto.setEmail(request.getParameter("email"));
+			//dto.setHp(request.getParameter("hp"));
+			//dto.setZipcode(request.getParameter("zipcode"));
+			//dto.setAddress1(request.getParameter("address1"));
+			//dto.setAddress2(request.getParameter("address2"));  
+			
+			dao.insert(userid, passwd, name, email, hp, zipcode, address1, address2);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/member2/member2.jsp");
+			rd.forward(request, response);
+			
+		} else if(uri.indexOf("view.do") != -1) { //상세정보 뷰
+			System.out.println("view.do");
+			String userid = request.getParameter("userid");
+			
+			Member2DTO dto = dao.view(userid);
+			request.setAttribute("dto", dto);
+			RequestDispatcher rd = request.getRequestDispatcher("/member2/member2_view.jsp");
+			rd.forward(request, response);
+			
+		} else if(uri.indexOf("update.do") != -1){
+			System.out.println("update.do");
+			String userid = request.getParameter("userid");
+			String passwd = request.getParameter("passwd");
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			String hp = request.getParameter("hp");
+			String zipcode = request.getParameter("zipcode");
+			String address1 = request.getParameter("address1");
+			String address2 = request.getParameter("address2");
+			
+			dao.update(userid,passwd,name,email,hp,zipcode,address1,address2);
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/member2/member2.jsp");
+			rd.forward(request, response);
+			
+		}
 		
 	}
 

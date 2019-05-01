@@ -8,6 +8,15 @@
 <head>
 <meta charset="UTF-8">
 <title>member2_list</title>
+<script type="text/javascript">
+
+function view(userid){
+	document.form1.userid.value=userid;
+	document.form1.submit();
+}
+
+
+</script>
 </head>
 <body>
 <%
@@ -29,9 +38,10 @@ int count = (int)map.get("count");
 		<th>상세주소</th>
 		<th>가입일</th>
 	</tr>
-	<%for(Member2DTO dto : list){ %>
+	<%for(Member2DTO dto : list){ 
+	String userid = dto.getUserid();%>
 	<tr>
-		<td><%=dto.getUserid() %></td>
+		<td><a href="#" onclick="view('<%=userid%>')"><%=userid %></a></td>
 		<td><%=dto.getPasswd() %></td>
 		<td><%=dto.getName() %></td>
 		<td><%=dto.getEmail() %></td>
@@ -43,6 +53,10 @@ int count = (int)map.get("count");
 	</tr>
 	<%} %>
 </table>
+<form name="form1" method="post" action="/jsp02/member2_Servlet/view.do">
+  <input type="hidden" name="userid">
+</form>
+
 
 
 </body>
