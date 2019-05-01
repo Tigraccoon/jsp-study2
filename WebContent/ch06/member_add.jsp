@@ -118,27 +118,21 @@ function check(){
 	</tr>
 	<tr>
 		<th>우편번호</th>
-		<td><input type="text" name="zipcode" id="zipcode" disabled="disabled" class="postcodify_postcode5"> 
-		<button id="postcodify_search_button">검색</button></td>
+		<td><input type="text" name="zipcode" id="zipcode"></td>
 	</tr>
 	<tr>
 		<th>주소1</th>
-		<td><input type="text" name="address1" id="address1" disabled="disabled" class="postcodify_address"></td>
+		<td><input type="text" name="address1" id="address1"></td>
 	</tr>
 	<tr>
 		<th>주소2</th>
-		<td><input type="text" name="address2" id="address2" class="postcodify_details"></td>
+		<td><input type="text" name="address2" id="address2"></td>
 	</tr>
 	<tr>
 		<td colspan="2"><input type="button" value="가입!" onclick="check()"></td>
 	</tr>
 </table>
 </form>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
-<script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
-
 
 </body>
 </html>

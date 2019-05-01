@@ -31,6 +31,16 @@ th{
 }
 
 </style>
+
+<script type="text/javascript">
+
+function view(userid){
+	document.form1.userid.value=userid;
+	document.form1.submit();
+}
+
+</script>
+
 </head>
 <body>
 
@@ -45,9 +55,8 @@ int count = (int)map.get("count");
 <table>
 <caption style="text-align: right;">등록된 회원 수 : <%=count %></caption>
 	<tr>
-		<th>아이디</th>
-		<th>비밀번호</th>
 		<th>이름</th>
+		<th>비밀번호</th>
 		<th>이메일</th>
 		<th>전화번호</th>
 		<th>우편번호</th>
@@ -57,9 +66,8 @@ int count = (int)map.get("count");
 	</tr>
 <%for(MemberDTO dto : list){%>
 	<tr>
-		<td><%=dto.getUserid() %></td>
+		<td><a href="#" onclick="view('<%=dto.getUserid() %>')"><%=dto.getName() %></a></td>
 		<td><%=dto.getPasswd() %></td>
-		<td><%=dto.getName() %></td>
 		<td><%=dto.getEmail() %></td>
 		<td><%=dto.getHp() %></td>
 		<td><%=dto.getZipcode() %></td>
@@ -69,7 +77,9 @@ int count = (int)map.get("count");
 	</tr>
 <%} %>
 </table>
-
+<form name="form1" method="post" action="/jsp02/member_servlet/view.do">
+  <input type="hidden" name="userid">
+</form>
 
 
 </body>

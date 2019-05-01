@@ -21,6 +21,7 @@ public class MemberController extends HttpServlet {
 		
 		String uri = request.getRequestURI();
 		HttpSession session = request.getSession();
+		String context = request.getContextPath();
 		MemberDAO dao = new MemberDAO();
 		
 		if(uri.indexOf("list.do") != -1) {	//리스트 출력
@@ -44,6 +45,28 @@ public class MemberController extends HttpServlet {
 			System.out.println("\nadd.do 호출!");
 			System.out.println(request.getRequestURI());
 			System.out.println(uri.indexOf("add.do\n"));
+			int result=0;
+			String userid = request.getParameter("userid");
+			String passwd = request.getParameter("passwd");
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			String hp = request.getParameter("hp");
+			String zipcode = request.getParameter("zipcode");
+			String address1 = request.getParameter("address1");
+			String address2 = request.getParameter("address2");
+			
+			result = dao.memberAdd(userid, passwd, name, email, hp, zipcode, address1, address2);
+			if(result == -1) {
+				System.out.println("데이터 저장 에러..");
+			}else {
+				String page = "/ch06/member.jsp";
+				RequestDispatcher rd = request.getRequestDispatcher(page);
+				rd.forward(request, response);
+			}
+		} else if(uri.indexOf("join.do") != -1) {
+			System.out.println("\njoin.do 호출!");
+			System.out.println(request.getRequestURI());
+			System.out.println(uri.indexOf("join.do\n"));
 			
 			String userid = request.getParameter("userid");
 			String passwd = request.getParameter("passwd");
@@ -54,11 +77,73 @@ public class MemberController extends HttpServlet {
 			String address1 = request.getParameter("address1");
 			String address2 = request.getParameter("address2");
 			
-			dao.memberAdd(userid, passwd, name, email, hp, zipcode, address1, address2);
+			MemberDTO dto = new MemberDTO();
 			
-			String page = "/ch06/member.jsp";
+			dto.setUserid(userid);
+			dto.setPasswd(passwd);
+			dto.setName(name);
+			dto.setEmail(email);
+			dto.setHp(hp);
+			dto.setZipcode(zipcode);
+			dto.setAddress1(address1);
+			dto.setAddress2(address2);
+			
+			dao.insert(dto);
+			
+		} else if(uri.indexOf("view.do") != -1) {
+			System.out.println("\nview.do 호출!");
+			System.out.println(request.getRequestURI());
+			System.out.println(uri.indexOf("view.do\n"));
+			
+			String userid = request.getParameter("userid");
+			//System.out.println("클릭한 아이디 : " + userid);
+			
+			MemberDTO dto = dao.memberDetail(userid);
+			request.setAttribute("dto", dto);
+			
+			String page = "/ch06/member_view.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher(page);
 			rd.forward(request, response);
+			
+		} else if(uri.indexOf("update.do") != -1) {
+			System.out.println("\nupdate.do 호출!");
+			System.out.println(request.getRequestURI());
+			System.out.println(uri.indexOf("update.do\n"));
+			
+			String userid = request.getParameter("userid");
+			String passwd = request.getParameter("passwd");
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			String hp = request.getParameter("hp");
+			String zipcode = request.getParameter("zipcode");
+			String address1 = request.getParameter("address1");
+			String address2 = request.getParameter("address2");
+			
+			MemberDTO dto = new MemberDTO();
+			
+			dto.setUserid(userid);
+			dto.setPasswd(passwd);
+			dto.setName(name);
+			dto.setEmail(email);
+			dto.setHp(hp);
+			dto.setZipcode(zipcode);
+			dto.setAddress1(address1);
+			dto.setAddress2(address2);
+			
+			dao.update(dto);
+			
+			response.sendRedirect(context+"/ch06/member.jsp");
+			
+		} else if(uri.indexOf("delete.do") != -1) {
+			System.out.println("\ndelete.do 호출!");
+			System.out.println(request.getRequestURI());
+			System.out.println(uri.indexOf("delete.do\n"));
+			
+			String userid = request.getParameter("userid");
+			
+			dao.delete(userid);
+			
+			response.sendRedirect(context+"/ch06/member.jsp");
 		}
 		
 	}
