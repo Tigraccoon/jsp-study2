@@ -3,6 +3,7 @@ package member2;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class Member2DAO {
 		try {
 			String sql = "SELECT * FROM member ORDER BY userid";
 			conn = DB.getConn();
+
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -220,6 +222,53 @@ public class Member2DAO {
 			}
 		}
 	}
+
+	public String login(String userid, String passwd) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String result = "";
+		
+		try {
+			String sql = "SELECT * FROM member WHERE userid=? AND passwd=?";
+			conn = DB.getConn();
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			pstmt.setString(2, passwd);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = "시공의 폭풍에 온걸 환영한다! " + rs.getString("name") + "!!!";
+			} else {
+				result = "계정을 확인하고 다시오시게..";
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("login Error~");
+		} finally {
+			try {
+				if(rs!=null)rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if(pstmt!=null)pstmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if(conn!=null)conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+
 
 	
 	
