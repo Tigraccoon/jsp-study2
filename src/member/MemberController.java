@@ -144,6 +144,28 @@ public class MemberController extends HttpServlet {
 			dao.delete(userid);
 			
 			response.sendRedirect(context+"/ch06/member.jsp");
+			
+		} else if(uri.indexOf("login.do") != -1) {
+			System.out.println("\nlogin.do 호출!");
+			System.out.println(request.getRequestURI());
+			System.out.println(uri.indexOf("login.do\n"));
+			
+			String userid = request.getParameter("userid");
+			String passwd = request.getParameter("passwd");
+			
+			System.out.println("아이디 : " + userid + " 비밀번호 : " + passwd);
+			
+			MemberDTO dto = new MemberDTO();
+			dto.setUserid(userid);
+			dto.setPasswd(passwd);
+			
+			String result = dao.loginCheck(dto);
+			
+			request.setAttribute("result", result);
+			String page = "/ch06/login_result.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			
+			rd.forward(request, response);
 		}
 		
 	}

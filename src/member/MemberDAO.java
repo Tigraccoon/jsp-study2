@@ -273,6 +273,50 @@ public class MemberDAO {
 			}
 		}
 	}
+
+	public String loginCheck(MemberDTO dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String result="";
+		try {
+			conn = DB.getConn();
+			String sql = "SELECT * FROM member WHERE userid=? AND passwd=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getUserid());
+			pstmt.setString(2, dto.getPasswd());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = "어서와라! " + rs.getString("name") + "!!";
+			} else {
+				result = "로그인 실패! 확인하고 다시 로그인해라~";
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("loginCheck Error...");
+		} finally {
+			try {
+				if(rs!=null) rs.close(); 
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			try {
+				if(pstmt!=null) pstmt.close(); 
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			try {
+				if(conn!=null) conn.close(); 
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
 	
 	
 }
