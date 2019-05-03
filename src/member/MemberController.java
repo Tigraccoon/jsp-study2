@@ -166,7 +166,124 @@ public class MemberController extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher(page);
 			
 			rd.forward(request, response);
+		
+		} else if(uri.indexOf("join_oracle_secret.do") != -1) {
+			System.out.println("\njoin_oracle_secret.do 호출!");
+			System.out.println(request.getRequestURI());
+			System.out.println(uri.indexOf("join_oracle_secret.do\n"));
+			
+			String userid = request.getParameter("userid");
+			String passwd = request.getParameter("passwd");
+			String name = request.getParameter("name");
+			
+			MemberDTO dto = new MemberDTO();
+			
+			dto.setUserid(userid);
+			dto.setPasswd(passwd);
+			dto.setName(name);
+			
+			dao.insertCrypt(dto);
+		
+		} else if(uri.indexOf("login_oracle_secret.do") != -1) {
+			
+			System.out.println("\nlogin_oracle_secret.do 호출!");
+			System.out.println(request.getRequestURI());
+			System.out.println(uri.indexOf("login_oracle_secret.do\n"));
+			
+			String userid = request.getParameter("userid");
+			String passwd = request.getParameter("passwd");
+			
+			System.out.println("아이디 : " + userid + " 비밀번호 : " + passwd);
+			
+			MemberDTO dto = new MemberDTO();
+			dto.setUserid(userid);
+			dto.setPasswd(passwd);
+			
+			String result = dao.loginCheckOracle(dto);
+			
+			request.setAttribute("result", result);
+			String page = "/ch06/login_result.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			
+			rd.forward(request, response);
+			
+		} else if(uri.indexOf("join_sha.do") != -1) {
+			
+			System.out.println("\njoin_sha.do 호출!");
+			System.out.println(request.getRequestURI());
+			System.out.println(uri.indexOf("join_sha.do\n"));
+			
+			String userid = request.getParameter("userid");
+			String passwd = request.getParameter("passwd");
+			String name = request.getParameter("name");
+			
+			MemberDTO dto = new MemberDTO();
+			
+			dto.setUserid(userid);
+			dto.setPasswd(passwd);
+			dto.setName(name);
+			
+			dao.insertSha256(dto);
+			
+		} else if(uri.indexOf("login_sha.do") != -1) {
+			System.out.println("\nlogin_sha.do 호출!");
+			System.out.println(request.getRequestURI());
+			System.out.println(uri.indexOf("login_sha.do\n"));
+			
+			String userid = request.getParameter("userid");
+			String passwd = request.getParameter("passwd");
+			
+			System.out.println("아이디 : " + userid + " 비밀번호 : " + passwd);
+			
+			MemberDTO dto = new MemberDTO();
+			dto.setUserid(userid);
+			dto.setPasswd(passwd);
+			
+			String result = dao.loginCheckSha256(dto);
+			
+			request.setAttribute("result", result);
+			String page = "/ch06/login_result.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			
+			rd.forward(request, response);
+			
+		} else if (uri.indexOf("join_bcrypt.do") != -1) {
+			System.out.println("\njoin_bcrypt.do 호출!");
+			System.out.println(request.getRequestURI());
+			System.out.println(uri.indexOf("join_bcrypt.do\n"));
+			
+			String userid = request.getParameter("userid");
+			String passwd = request.getParameter("passwd");
+			String name = request.getParameter("name");
+			System.out.println(userid);
+			MemberDTO dto = new MemberDTO();
+			
+			dto.setUserid(userid);
+			dto.setPasswd(passwd);
+			dto.setName(name);
+			
+			dao.insertBcrypt(dto);
+			
+			
+		} else if(uri.indexOf("login_bcrypt.do") != -1) {
+			String userid=request.getParameter("userid");
+			String passwd=request.getParameter("passwd");
+			System.out.println("아이디:"+userid);
+			System.out.println("패스워드:"+passwd);
+			MemberDTO dto=new MemberDTO();
+			dto.setUserid(userid);
+			dto.setPasswd(passwd);
+			String result=dao.loginCheckBcrypt(dto);
+			System.out.println(result);
+			request.setAttribute("result", result);
+			String page="/ch06/login_result.jsp";
+			RequestDispatcher rd=request.getRequestDispatcher(page);
+			rd.forward(request, response);
+			
 		}
+		
+		
+		
 		
 	}
 
