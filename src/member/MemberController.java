@@ -37,7 +37,9 @@ public class MemberController extends HttpServlet {
 			
 			session.setAttribute("map", map);
 
-			String page = "/ch06/member_list.jsp";
+			//String page = "/ch06/member_list.jsp";
+			String page = "/ch08/member_list2.jsp";
+			
 			RequestDispatcher rd = request.getRequestDispatcher(page);
 			rd.forward(request, response);
 			
