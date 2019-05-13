@@ -12,7 +12,9 @@
  -->
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>      
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+   
 <!-- :set var="변수명" value="값" -->
 <c:set var="path" value="${pageContext.request.contextPath}" />
 
