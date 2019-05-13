@@ -21,6 +21,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<!-- 실제 sql query -->
 	<mappers>
 		<mapper resource="memo/mapper/memo.xml" />
+		<mapper resource="memo2/mapper2/memo2.xml" />
 		
 	</mappers>
 </configuration>
