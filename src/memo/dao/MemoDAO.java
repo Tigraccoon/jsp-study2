@@ -25,15 +25,32 @@ public class MemoDAO {
 		//namespace.id ex)여기서는 네임스페이스는 memo이다.
 		List<MemoDTO> list=null;
 		try {
-			if(searchkey.equals("writer_memo")) {	//이름+메모로 검색
-				list = session.selectList("memo.listAll", search);
-			} else {
-				Map<String, String> map = new HashMap<>();
+			if(searchkey.equals("writer_memo")) {//이름+메모로 검색
+				list=session.selectList("memo.listAll",search);
+			}else {
+				Map<String,String> map=new HashMap<>();
 				map.put("searchkey", searchkey);
 				map.put("search", search);
-				//MyBatis의 단점인 입력 변수 1개를 극복하기 위해 멥을 사용
-				list = session.selectList("memo.list", map);
-				//memo.xml에서 ${변수명}은 따옴표 미포함, #{변수명}이 따옴표 포함
+				//입력매개변수는 1개만 전달할 수 있음
+				//(searchkey,search) 두개를 쓸 수 없다.
+				list=session.selectList("memo.list",map);
+				for(MemoDTO dto : list) {
+					String memo=dto.getMemo();
+					//공백문자처리
+					memo=memo.replace("  ", "&nbsp;&nbsp;");//insert때보다
+					//select때 처리가 더 좋다.
+					//태그문자 처리
+					memo=memo.replace("<", "&lt;");
+					memo=memo.replace(">", "&gt;");
+					//키워드에 색상 처리
+					if(searchkey.equals("memo")) {
+						if(memo.indexOf(search) != -1) {
+							memo=memo.replace(search, 
+									"<font color='red'>"+search+"</font>");
+						}
+					}
+					dto.setMemo(memo);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -45,13 +62,52 @@ public class MemoDAO {
 	}
 
 	public void insertMemo(MemoDTO dto) {
+		//mybatis 실행 객체 생성
+		SqlSession session=MybatisManager.getInstance().openSession();
+		//이름입력영역도 추가처리
+		/*
+		 * String writer=dto.getWriter(); //공백 문자 처리(스페이스 2개를 변환)
+		 * writer=writer.replace("  ", "&nbsp;&nbsp;"); //메모입력영역 처리 String
+		 * memo=dto.getMemo(); //공백 문자 처리 memo=memo.replace("  ", "&nbsp;&nbsp;");
+		 * 
+		 * //태그문자 처리 //String memo=dto.getMemo(); memo=memo.replace("<", "&lt;");//Less
+		 * Than ~보다 작다 memo=memo.replace(">", "&gt;");//Greater than dto.setMemo(memo);
+		 */
 		
+		session.insert("memo.insert", dto);//레코드 추가, insert메소드는
+		//파라미터가 1개밖에 허용안된다.
+		session.commit();//수동 커밋, mybatis는 자동커밋을 막았다.
+		session.close();//mybatis 세션닫기
+	}//insertMemo
+	
+	public MemoDTO viewMemo(int idx) {
 		SqlSession session = MybatisManager.getInstance().openSession();
 		
-		session.insert("memo.insert", dto);	//레코드 추가, insert메소드는 파라미터가 1개만 허용
-		//mybatis는 수동커밋이 기본
-		session.commit();
-		session.close();
-	}
+		MemoDTO dto = session.selectOne("memo.view", idx);
+		//select에는 selectOne, selectList가 있다.
+		//selectOne은 1개의 레코드를 가져오고 selectList는 2개 이상의 레코드를 가져올때 쓰인다.
+		
+		if(session!=null)session.close();
+		
+		return dto;
+	}//viewMemo
 
+	public void updateMemo(MemoDTO dto) {
+		SqlSession session = MybatisManager.getInstance().openSession();
+		
+		session.update("memo.update", dto);
+		session.commit();
+		
+		if(session!=null)session.close();
+	}//updateMemo
+
+	public void deleteMemo(int idx) {
+		SqlSession session = MybatisManager.getInstance().openSession();
+		
+		session.delete("memo.delete", idx);
+		session.commit();
+		
+		if(session!=null)session.close();
+	}//deleteMemo
+	
 }

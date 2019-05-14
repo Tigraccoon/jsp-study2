@@ -4,9 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <title>memo_list</title>
 <%@include file="../include/header.jsp" %>
 <script src="../include/jquery-3.3.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <style type="text/css">
 body{
 	background: #cccccc;
@@ -31,8 +36,10 @@ th{
 </style>
 </head>
 <body>
-
-<table>
+<div class="container-fluid">
+<div class="row">
+<div class="col-xs-8 col-xs-offset-2">
+<table class="table table-striped">
 	<tr>
 		<th>번호</th>
 		<th>이름</th>
@@ -43,12 +50,15 @@ th{
 	<tr>
 		<td>${row.idx }</td>
 		<td>${row.writer }</td>
-		<td>${row.memo }</td>
+		<td><a href="${path}/memo_servlet/view.do?idx=${row.idx}">${row.memo }</a></td>
 		<td>${row.post_date }</td>
 	</tr>
 	</c:forEach>
 </table>
 
+</div>
+</div>
+</div>
 
 </body>
 </html>

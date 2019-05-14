@@ -16,9 +16,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE ${searchkey} like '%'||#{search}||'%'  
 		ORDER BY idx DESC
   </select>
+  <select id="view" parameterType="int" resultType="memo.dto.MemoDTO">
+  	SELECT * FROM memo 
+  		WHERE idx=#{idx}
+  </select>
   <insert id="insert" parameterType="memo.dto.MemoDTO">
-    insert into memo ( idx, writer, memo ) values 
-    ( (select nvl( max(idx)+1, 1) from memo)
+    INSERT INTO memo ( idx, writer, memo ) VALUES 
+    ( (select nvl( max(idx)+1, 1) FROM memo)
     , #{writer}, #{memo}) 
   </insert>
+  <update id="update" parameterType="memo.dto.MemoDTO">
+  	UPDATE memo SET writer=#{writer}, memo=#{memo} 
+  		WHERE idx=#{idx}
+  </update>
+  <delete id="delete" parameterType="int">
+  	DELETE FROM memo WHERE idx=#{idx}
+  </delete>
 </mapper>

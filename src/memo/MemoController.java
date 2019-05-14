@@ -52,6 +52,49 @@ public class MemoController extends HttpServlet {
 			dao.insertMemo(dto);
 			
 		}
+		
+		//insert
+		
+		else if(uri.indexOf("view.do") != -1) {
+			int idx = Integer.parseInt(request.getParameter("idx"));
+			System.out.println("글번호 : " + idx);
+			
+			MemoDTO dto = dao.viewMemo(idx);
+			
+			request.setAttribute("dto", dto);
+			String page = "/memo/memo_view.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
+		}
+		
+		//view
+		
+		else if(uri.indexOf("update.do") != -1) {
+			int idx = Integer.parseInt(request.getParameter("idx"));
+			String writer = request.getParameter("writer");
+			String memo = request.getParameter("memo");
+			System.out.println(idx);
+			MemoDTO dto = new MemoDTO();
+			
+			dto.setIdx(idx);
+			dto.setWriter(writer);
+			dto.setMemo(memo);
+			
+			dao.updateMemo(dto);
+			
+			response.sendRedirect(request.getContextPath() + "/memo/memo.jsp");
+		}
+		
+		//update
+		
+		else if(uri.indexOf("delete.do") != -1) {
+			int idx = Integer.parseInt(request.getParameter("idx"));
+			
+			dao.deleteMemo(idx);
+			
+			response.sendRedirect(request.getContextPath() + "/memo/memo.jsp");
+		}
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
