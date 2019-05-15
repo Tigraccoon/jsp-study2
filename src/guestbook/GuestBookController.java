@@ -20,21 +20,98 @@ public class GuestBookController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String uri = request.getRequestURI();
 		GuestBookDAO dao = new GuestBookDAO();
-		String page="";
+		String url="";
 		String context = request.getContextPath();
 		
 		if(uri.indexOf("list.do") != -1) {
-			List<GuestBookDTO> list = dao.getList();
+			String searchkey = request.getParameter("searchkey");
+			String search = request.getParameter("search");
+			
+			if(searchkey==null) searchkey="name";
+			if(search==null) search="";
+			
+			
+			List<GuestBookDTO> list = dao.getList(searchkey, search);
 			
 			request.setAttribute("list", list);
 			request.setAttribute("count", list.size());
 			
-			page = "/guestbook/list.jsp";
-			RequestDispatcher rd = request.getRequestDispatcher(page);
+			request.setAttribute("searchkey", searchkey);
+			request.setAttribute("search", search);
+			
+			url = "/guestbook/list.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher(url);
 			rd.forward(request, response);
 		}
 		
+		else if(uri.indexOf("insert.do") != -1) {
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			String passwd = request.getParameter("passwd");
+			String content = request.getParameter("content");
+			
+			GuestBookDTO dto = new GuestBookDTO();
+			
+			dto.setName(name);
+			dto.setEmail(email);
+			dto.setPasswd(passwd);
+			dto.setContent(content);
+			
+			dao.gbInsert(dto);
+			
+			url="/guestbook_servlet/list.do";
+			
+			response.sendRedirect(context+url);
+		}
 		
+		else if(uri.indexOf("passwd_check.do") != -1){
+			int idx=Integer.parseInt(request.getParameter("idx"));
+			String passwd=request.getParameter("passwd");
+			
+			boolean result = dao.passwdCheck(idx, passwd);
+			
+			if(result) {
+				url="/guestbook/edit.jsp";
+				GuestBookDTO dto = dao.getDetail(idx);
+				request.setAttribute("dto", dto);
+			} else {
+				url="/guestbook/index.jsp";
+				
+			}
+			
+			RequestDispatcher rd = request.getRequestDispatcher(url);
+			rd.forward(request, response);
+		}
+		
+		else if(uri.indexOf("update.do") != -1) {
+			int idx=Integer.parseInt(request.getParameter("idx"));
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			String passwd = request.getParameter("passwd");
+			String content = request.getParameter("content");
+			
+			GuestBookDTO dto = new GuestBookDTO();
+			
+			dto.setIdx(idx);
+			dto.setName(name);
+			dto.setEmail(email);
+			dto.setPasswd(passwd);
+			dto.setContent(content);
+			
+			dao.gbUpdate(dto);
+			
+			url = "/guestbook_servlet/list.do";
+			response.sendRedirect(context+url);
+		}
+		
+		else if(uri.indexOf("delete.do") != -1) {
+			int idx=Integer.parseInt(request.getParameter("idx"));
+			
+			dao.gbDelete(idx);
+			
+			url = "/guestbook_servlet/list.do";
+			response.sendRedirect(context+url);
+		}
 		
 	}
 
