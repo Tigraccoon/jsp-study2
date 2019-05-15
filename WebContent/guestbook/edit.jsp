@@ -76,7 +76,12 @@ function gb_delete(){
 </script>
 </head>
 <body>
-
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>방명록 수정 페이지 입니다. </strong> 빈칸을 모두 채우세요.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <div class="container-fluid">
 	<div class="row justify-content-center">
 		<div class="col col-auto">
@@ -112,15 +117,14 @@ function gb_delete(){
 							<input type="button" value="수정" onclick="gb_update()" class="btn btn-primary"> 
 							<input type="button" value="삭제" onclick="gb_delete()" class="btn btn-danger"> 
 							<input type="button" value="목록" onclick="location.href='index.jsp'" class="btn btn-info">
-							<input type="hidden" value="${dto.idx }" name="idx"> 
+							<input type="hidden" value="${dto.idx }" name="idx">
 							</th>
 						</tr>
 					</table>
 				</form>
+			</div>
 		</div>
 	</div>
-
-
 
 
 
