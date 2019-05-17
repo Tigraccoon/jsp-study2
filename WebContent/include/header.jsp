@@ -22,3 +22,10 @@
 <%-- <% String path = request.getContextPath(); %>
 <%=path %>
  --%>
+ 
+ <!-- 부트스트랩 -->
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="../bootstrap-4.3.1-dist/css/bootstrap.min.css">
+<script src="../include/jquery-3.3.1.min.js"></script>
+<script src="../bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js"></script>
+<script src="../bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>

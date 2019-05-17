@@ -4,9 +4,9 @@
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<!-- 알리아스 설정 -->
+	<!-- 알리아스 설정 resultType을 간략하게 해줌 -->
 	<typeAliases>
-	
+		<typeAlias type="page.EmpDTO" alias="e"/>
 	</typeAliases>
 	<!-- db연결 참조코드(context.xml과 연결됨) -->
 	<environments default="">
@@ -23,5 +23,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="memo/mapper/memo.xml" />
 		<mapper resource="memo2/mapper2/memo2.xml" />
 		<mapper resource="guestbook/mapper/guestbook.xml" />
+		<mapper resource="page/mapper/emp.xml"/>
 	</mappers>
 </configuration>
