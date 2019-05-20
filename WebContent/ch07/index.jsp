@@ -11,18 +11,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-
-<c:if test="${param.message == 'error' }">
-	<script>
-		alert("아이디 또는 비밀번호가 일치하지 않습니다.");
-	</script>
-</c:if>
-<c:if test="${param.message == 'logout' }">
-	<script>
-		alert("로그아웃되었습니다.");
-	</script>
-</c:if>
+  
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
@@ -56,11 +45,9 @@
       .row.content {height:auto;} 
     }
   </style>
-
-
-
 </head>
 <body>
+
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -73,13 +60,13 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="index.jsp">Home</a></li>
+        <li class="active"><a href="#">Home</a></li>
         <li><a href="#">About</a></li>
         <li><a href="#">Projects</a></li>
         <li><a href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="session_login.jsp"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        <li><a href="session_login.jsp"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       </ul>
     </div>
   </div>
@@ -93,28 +80,12 @@
       <p><a href="#">Link</a></p>
     </div>
     <div class="col-sm-8 text-left"> 
-
-<h2>세션 로그인</h2>
-<!-- 아래 ${path}는  header.jsp의  set var="path" 의 path변수이다.-->
-<form method="post" name="form1" 
-	action="${path}/session_servlet/login.do">
-<table border="1">
-	<tr>
-		<td>아이디</td>
-		<td><input name="userid"></td>
-	</tr>
-	<tr>
-		<td>비밀번호</td>
-		<td><input type="password" name="passwd"></td>
-	</tr>
-	<tr>
-		<td colspan="2" align="center">
-			<input type="submit" value="로그인">
-		</td>
-	</tr>
-</table>
-</form>
-   </div>
+      <h1>Welcome</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <hr>
+      <h3>Test</h3>
+      <p>Lorem ipsum...</p>
+    </div>
     <div class="col-sm-2 sidenav">
       <div class="well">
         <p>ADS</p>
@@ -132,4 +103,3 @@
 
 </body>
 </html>
-
