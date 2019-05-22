@@ -17,7 +17,7 @@ table{
 	border-spacing: 0;
 	border: 2px solid black;
 	margin: auto;
-	width: 600px;
+	width: 1000px;
 }
 th, td{
 	padding: 10px;
@@ -29,9 +29,25 @@ th{
 	background: #8BB7FF;
 }
 </style>
+<script type="text/javascript">
+$(function(){
+	$("#btnWrite").click(function(){
+		location.href="${path}/board/write.jsp";
+	});
+});
+
+</script>
 </head>
 <body>
-	
+<div class="container-fluid">
+<div class="row justify-content-center">
+<div class="col col-auto">
+<h2>게시판</h2><br>
+<button id="btnWrite" class="btn btn-primary">글쓰기</button><br>
+</div>
+</div>
+</div>
+<br>
 <table>
 	<tr>
 		<th>번호</th>
@@ -46,16 +62,51 @@ th{
 		<tr>
 			<td>${list.num }</td>
 			<td>${list.writer }</td>
-			<td>${list.subject }</td>
+			<td><a href="${path }/board_servlet/view.do?num=${list.num}">${list.subject } 
+				<c:if test="${list.comment_count > 0 }">
+					(${list.comment_count })
+				</c:if>
+			</a></td>
 			<td>${list.reg_date }</td>
 			<td>${list.readcount }</td>
-			<td>${list.filename }</td>
+			<td>
+				<c:if test="${list.filesize > 0}">
+					<a href="${path }/board_servlet/download.do?num=${list.num}">
+						<img alt="파일 이미지" src="../images/file.gif">
+					</a>
+				</c:if>
+				<c:if test="${list.filesize == 0 }">
+					-
+				</c:if>
+			</td>
 			<td>${list.down }</td>
 		</tr>
 	</c:forEach>
-
-	</table>
-	
+</table>
+<br><br>
+<c:if test="${page.curPage > 1 }">
+	<a href="#" class="btn btn-primary" onclick="list('1')">처음</a>
+</c:if>
+<c:if test="${page.curBlock > 1}">
+	<a href="#" onclick="list('${page.prevPage}')" class="btn btn-primary">이전</a>
+</c:if>
+<c:forEach var="num" begin="${page.blockStart }" end="${page.blockEnd }">
+	<c:choose>
+		<c:when test="${num == page.curPage }">
+			<span class="btn btn-success disabled"><b>${num }</b></span>
+		</c:when>
+		<c:otherwise>
+			<a href="#" onclick="list('${num}')" class="btn btn-outline-info"><b>${num }</b></a>
+		</c:otherwise>
+	</c:choose>
+</c:forEach>
+<c:if test="${page.curBlock < page.totBlock }">
+	<a href="#" onclick="list('${page.nextPage}')" class="btn btn-primary">다음</a>
+</c:if>
+<c:if test="${page.curPage < page.totPage}">
+	<a href="#" onclick="list('${page.totPage}')" class="btn btn-primary">끝</a>
+</c:if>
+	<br><br><br>
 	
 </body>
 </html>
