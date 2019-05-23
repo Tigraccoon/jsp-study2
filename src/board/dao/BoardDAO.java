@@ -191,5 +191,46 @@ public class BoardDAO {
 		
 		return count;
 	}
+
+	public void updateStep(int ref, int re_step) {
+		SqlSession session = null;
+		
+		try {
+			session = MybatisManager.getInstance().openSession();
+			
+			BoardDTO dto = new BoardDTO();
+			
+			dto.setRef(ref);
+			dto.setRe_step(re_step);
+			
+			session.update("board.updateStep", dto);
+			
+			session.commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("updateStep Error...");
+		} finally {
+			if(session!=null)session.close();
+		}
+	}
+
+	public void reply(BoardDTO dto) {
+		SqlSession session = null;
+		
+		try {
+			session = MybatisManager.getInstance().openSession();
+			
+			session.insert("board.reply", dto);
+			
+			session.commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("reply Error...");
+		} finally {
+			if(session!=null)session.close();
+		}
+	}
 	
 }

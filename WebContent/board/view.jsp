@@ -79,6 +79,7 @@ th{
 							<th colspan="4" align="center">
 								<input type="hidden" name="num" value="${dto.num}"> 
 								<input type="button" value="수정/삭제" id="btnEdit" class="btn btn-warning"> 
+								<input type="button" value="답변" id="btnReply" class="btn btn-primary">
 								<input type="button" value="목록" id="btnList" class="btn btn-info">
 							</th>
 						</tr>
@@ -110,6 +111,8 @@ th{
 			</div>
 		</div>
 </div>
+
+
 <script type="text/javascript">
 $(function(){
 	comment_list();
@@ -120,6 +123,11 @@ $(function(){
 	
 	$("#btnList").click(function(){
 		location.href="${path}/board_servlet/list.do";
+	});
+	
+	$("#btnReply").click(function(){
+		document.form1.action="${path}/board_servlet/reply.do";
+		document.form1.submit();
 	});
 });
 

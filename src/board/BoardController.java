@@ -210,7 +210,65 @@ public class BoardController extends HttpServlet {
 			//백그라운드로 실행하기 때문에 페이지 이동은 필요 없음..
 		}
 		
-	}
+		else if(url.indexOf("reply.do") != -1) {
+			System.out.println("\nreply.do\n");
+			
+			int num = Integer.parseInt(request.getParameter("num"));
+			
+			BoardDTO dto = dao.view(num);
+			
+			dto.setContent("\n===게시물의 내용===\n" + dto.getContent());
+			
+			request.setAttribute("dto", dto);
+			
+			page = "/board/reply.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
+			
+		}
+		
+		else if(url.indexOf("insertReply.do") != -1) {
+			System.out.println("\ninsertreply.do\n");
+			
+			int num = Integer.parseInt(request.getParameter("num"));
+			
+			BoardDTO dto = dao.view(num);
+			
+			int ref = dto.getRef();					//답변의 그룹 번호
+			int re_step = dto.getRe_step() + 1;		//출력 순번 + 1
+			int re_level = dto.getRe_level() + 1;	//출력 레벨 + 1
+			
+			String writer = request.getParameter("writer");
+			String subject = request.getParameter("subject");
+			String content = request.getParameter("content");
+			String passwd = request.getParameter("passwd");
+			String ip = request.getRemoteAddr();	//ip주소
+
+			dto.setWriter(writer);
+			dto.setSubject(subject);
+			dto.setContent(content);
+			dto.setPasswd(passwd);
+			dto.setIp(ip);
+			dto.setRef(ref);
+			dto.setRe_step(re_step);
+			dto.setRe_level(re_level);
+			dto.setFilename("-");
+			dto.setFilesize(0);
+			dto.setDown(0);
+			
+			//답글 순서 조정
+			dao.updateStep(ref,re_step);
+			//답글 쓰기
+			dao.reply(dto);
+			
+			page = "/board_servlet/list.do";
+			response.sendRedirect(path + page);
+			
+		}
+	
+	
+	
+	}//doget
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

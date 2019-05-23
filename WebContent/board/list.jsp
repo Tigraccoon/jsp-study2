@@ -62,11 +62,16 @@ $(function(){
 		<tr>
 			<td>${list.num }</td>
 			<td>${list.writer }</td>
-			<td><a href="${path }/board_servlet/view.do?num=${list.num}">${list.subject } 
-				<c:if test="${list.comment_count > 0 }">
-					(${list.comment_count })
-				</c:if>
-			</a></td>
+			<td style="text-align: left;">
+				<c:forEach var="i" begin="1" end="${list.re_level }">
+					&nbsp;&nbsp;
+				</c:forEach>
+				<a href="${path }/board_servlet/view.do?num=${list.num}">${list.subject } 
+					<c:if test="${list.comment_count > 0 }">
+						<label style="color: black">(${list.comment_count })</label>
+					</c:if>
+				</a>
+			</td>
 			<td>${list.reg_date }</td>
 			<td>${list.readcount }</td>
 			<td>
@@ -83,6 +88,9 @@ $(function(){
 		</tr>
 	</c:forEach>
 </table>
+
+
+<!-- 페이지 -->
 <br><br>
 <c:if test="${page.curPage > 1 }">
 	<a href="#" class="btn btn-primary" onclick="list('1')">처음</a>
