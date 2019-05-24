@@ -170,7 +170,7 @@ public class BoardController extends HttpServlet {
 			//조회수 증가
 			dao.plusReadCount(num, session);
 			
-			BoardDTO dto = dao.view(num);
+			BoardDTO dto = dao.viewReplace(num);
 			
 			request.setAttribute("dto", dto);
 			
@@ -265,8 +265,114 @@ public class BoardController extends HttpServlet {
 			response.sendRedirect(path + page);
 			
 		}
+		
+		else if(url.indexOf("pass_check.do") != -1) {
+			System.out.println("\npass_check.do\n");
+			
+			int num = Integer.parseInt(request.getParameter("num"));
+			
+			String passwd = request.getParameter("passwd");
+			
+			String result = dao.passwdCheck(num,passwd);
+			
+			if(result != null) {	//비밀번호가 맞으면?
+				page = "/board/edit.jsp";
+				request.setAttribute("dto", dao.view(num));
+				RequestDispatcher rd = request.getRequestDispatcher(page);
+				rd.forward(request, response);
+			} else {
+				page = path + "/board_servlet/view.do?num=" + num + "&message=error";
+			}
+			
+		}
 	
-	
+		else if(url.indexOf("update.do") != -1) {
+			System.out.println("\nupdate.do\n");
+			
+			File uploadDir = new File(Constants.UPLOAD_PATH); 
+			if(!uploadDir.exists()) {	//해당 디렉토리가 존재하지 않으면?
+				uploadDir.mkdir();	//디렉토리 생성
+			}
+			
+			MultipartRequest mr = new MultipartRequest(request, Constants.UPLOAD_PATH, Constants.MAX_UPLOAD 
+														, "UTF-8", new DefaultFileRenamePolicy());
+			
+			int num = Integer.parseInt(mr.getParameter("num"));
+			String writer = mr.getParameter("writer");
+			String subject = mr.getParameter("subject");
+			String content = mr.getParameter("content");
+			String passwd = mr.getParameter("passwd");
+			String ip = request.getRemoteAddr();	//ip주소
+			String filename = " ";	//공백 1개
+			int filesize = 0;
+			
+			try {
+				@SuppressWarnings("rawtypes")
+				Enumeration files = mr.getFileNames();
+				while(files.hasMoreElements()) {
+					//첨부파일의 이름
+					String file1 = (String)files.nextElement();
+					filename = mr.getFilesystemName(file1);
+					File f1 = mr.getFile(file1);
+					if(f1 != null) {
+						filesize = (int)f1.length();
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			BoardDTO dto = new BoardDTO();
+			
+			dto.setNum(num);
+			dto.setWriter(writer);
+			dto.setSubject(subject);
+			dto.setContent(content);
+			dto.setPasswd(passwd);
+			dto.setIp(ip);
+			//파일 첨부를 하지 않고 글을 썼을 경우?
+			//trim() : 좌우 공백 제거
+			if(filename == null || filename.trim().equals("")) {
+				BoardDTO dto2 = dao.view(num);
+				String fName = dto2.getFilename();
+				int fSize = dto2.getFilesize();
+				int fDown = dto2.getDown();
+				
+				dto.setFilename(fName);
+				dto.setFilesize(fSize);
+				dto.setDown(fDown);
+			} else {
+				dto.setFilename(filename);
+				dto.setFilesize(filesize);
+			}
+			String fileDel = mr.getParameter("fileDel");
+			//체크박스에 value를 안 쓰면 기본값인 on이 넘어옴
+			if(fileDel != null && fileDel.equals("on")) {
+				String fileName = dao.getFileName(num);
+				File f = new File(Constants.UPLOAD_PATH+fileName);
+				f.delete();	//파일 삭제
+				dto.setFilename("-");
+				dto.setFilesize(0);
+				dto.setDown(0);
+			}
+			
+			dao.update(dto);
+			page = "/board_servlet/list.do";
+			response.sendRedirect(path + page);
+		}
+		
+		else if(url.indexOf("delete.do") != -1) {
+			System.out.println("\ndelete.do\n");
+			
+			MultipartRequest mr = new MultipartRequest(request, Constants.UPLOAD_PATH, Constants.MAX_UPLOAD 
+					, "UTF-8", new DefaultFileRenamePolicy());
+			int num = Integer.parseInt(mr.getParameter("num"));
+
+			dao.delete(num);
+			
+			page = "/board_servlet/list.do";
+			response.sendRedirect(path + page);
+		}
 	
 	}//doget
 

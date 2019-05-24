@@ -101,7 +101,6 @@ public class BoardDAO {
 			session = MybatisManager.getInstance().openSession();
 			
 			dto = session.selectOne("board.view", num);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("plusDown Error...");
@@ -231,6 +230,89 @@ public class BoardDAO {
 		} finally {
 			if(session!=null)session.close();
 		}
+	}
+
+	public String passwdCheck(int num, String passwd) {
+		SqlSession session = null;
+		String result = null;
+		try {
+			session = MybatisManager.getInstance().openSession();
+			Map<String, Object> map = new HashMap<>();
+			
+			map.put("num", num);
+			map.put("passwd", passwd);
+			
+			result = session.selectOne("board.pass_check", map);
+			
+			session.commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("passwdCheck Error...");
+		} finally {
+			if(session!=null)session.close();
+		}
+		
+		return result;
+	}
+
+	public void update(BoardDTO dto) {
+		SqlSession session = null;
+		
+		try {
+			session = MybatisManager.getInstance().openSession();
+			
+			session.update("board.update", dto);
+			
+			session.commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("update Error...");
+		} finally {
+			if(session!=null)session.close();
+		}
+	}
+
+	public void delete(int num) {
+		SqlSession session = null;
+		
+		try {
+			session = MybatisManager.getInstance().openSession();
+			
+			session.update("board.delete", num);
+			
+			session.commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("delete Error...");
+		} finally {
+			if(session!=null)session.close();
+		}
+	}
+	
+	public BoardDTO viewReplace(int num) {
+		SqlSession session = null;
+		BoardDTO dto = null;
+		
+		try {
+			session = MybatisManager.getInstance().openSession();
+			
+			dto = session.selectOne("board.view", num);
+			//줄바꿈 처리
+			String content = dto.getContent();
+			content = content.replace("\n", "<br>");
+			dto.setContent(content);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("plusDown Error...");
+		} finally {
+			if(session!=null)session.close();
+		}
+		
+		return dto;
 	}
 	
 }

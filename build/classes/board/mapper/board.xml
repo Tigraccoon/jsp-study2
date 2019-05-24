@@ -10,7 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		 	select A.*, rownum as rn 
 			from (
       			select num,writer,subject,reg_date,readcount,filename,filesize,down,re_level
-				,(select count(*) from board_comment where board_num=num) comment_count
+				,(select count(*) from board_comment where board_num=num) comment_count, show
       				FROM board
       				ORDER BY ref DESC, re_step
   				) A
@@ -33,6 +33,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="boardCount" resultType="int">
 		SELECT count(*) FROM board
+	</select>
+	<select id="pass_check" resultType="String">
+		SELECT passwd FROM board
+			WHERE num=#{num} AND passwd=#{passwd}
 	</select>
 	<insert id="insert">
 		INSERT INTO board
@@ -68,6 +72,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateStep">
 		UPDATE board SET re_step+1 
 			WHERE ref=#{ref} AND re_step>=#{re_step}
+	</update>
+	<update id="update">
+		UPDATE board 
+			SET writer=#{writer},subject=#{subject},content=#{content},filename=#{filename},filesize=#{filesize},down=#{down} 
+			WHERE num=#{num}
+	</update>
+	<update id="delete">
+		UPDATE board
+			SET show='n' 
+			WHERE num=#{num}
 	</update>
 </mapper>
 

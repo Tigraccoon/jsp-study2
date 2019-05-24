@@ -19,6 +19,8 @@ public class BoardDTO {
 	private int filesize;
 	private int down;
 	private String ext;	//첨부파일의 확장자, 테이블에는 없음;;
+	private String show;
+	
 	public int getNum() {
 		return num;
 	}
@@ -115,12 +117,19 @@ public class BoardDTO {
 	public void setExt(String ext) {
 		this.ext = ext;
 	}
+	public String getShow() {
+		return show;
+	}
+	public void setShow(String show) {
+		this.show = show;
+	}
 	@Override
 	public String toString() {
 		return "BoardDTO [num=" + num + ", writer=" + writer + ", subject=" + subject + ", passwd=" + passwd
 				+ ", reg_date=" + reg_date + ", readcount=" + readcount + ", ref=" + ref + ", re_step=" + re_step
 				+ ", re_level=" + re_level + ", content=" + content + ", ip=" + ip + ", comment_count=" + comment_count
-				+ ", filename=" + filename + ", filesize=" + filesize + ", down=" + down + ", ext=" + ext + "]";
+				+ ", filename=" + filename + ", filesize=" + filesize + ", down=" + down + ", ext=" + ext + ", show="
+				+ show + "]";
 	}
 	
 }

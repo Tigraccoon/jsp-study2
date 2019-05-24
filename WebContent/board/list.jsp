@@ -59,6 +59,9 @@ $(function(){
 		<th>다운로드</th>
 	</tr>
 	<c:forEach var="list" items="${list }">
+	<c:choose>
+		<c:when test="${list.show == 'y' }">
+		
 		<tr>
 			<td>${list.num }</td>
 			<td>${list.writer }</td>
@@ -86,6 +89,14 @@ $(function(){
 			</td>
 			<td>${list.down }</td>
 		</tr>
+		</c:when>
+		<c:otherwise>
+			<tr>
+				<th>${list.num }</th>
+				<th colspan="6">삭제된 게시물입니다.</th>
+			</tr>
+		</c:otherwise>
+	</c:choose>
 	</c:forEach>
 </table>
 

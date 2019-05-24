@@ -129,6 +129,11 @@ $(function(){
 		document.form1.action="${path}/board_servlet/reply.do";
 		document.form1.submit();
 	});
+	$("#btnEdit").click(function(){
+		document.form1.action="${path}/board_servlet/pass_check.do";
+		document.form1.submit();
+	});
+	
 });
 
 function comment_add(){
